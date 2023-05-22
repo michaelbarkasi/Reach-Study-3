@@ -1,0 +1,297 @@
+---
+title: "R Notebook: Ultra-responsive, low-dimensional unfamiliar movement sonification guides unconstrained reaches to invisible targets in 3D space (Reach Study 3)"
+output: html_notebook
+---
+
+Note! Age and gender information has been removed from the public data.
+
+# Setup
+
+Begin by loading the necessary packages and data, along with dependency functions and basic constants/parameters of the dataset. 
+
+```{r}
+source("reach_study_3_script_setup.R")
+```
+
+# Preprocessing and Data Cleaning
+
+This chunk of code will:
+
+1. Run the chop algorithm that chops OptiTrack data into discrete reaches while checking for short reaches, overrun reaches, and floating reaches (initial position not in the right place).
+2. Compute Error (spatial and rotation, path and target) and put into pTable/rTable/motion tables (model is pulled out when computing mean error for random reaches).
+3. Remove OT rows not in reaches.
+4. Count reaches left after shorts and floats are removed.
+
+```{r}
+source("reach_study_3_script_preprocessing.R")
+```
+
+## Checking preprocesssing and data cleaning
+
+As the algorithm computes error (target and spatial) for each reach of each participant, it will give feedback on things like how many path points it couldn't find in both the Sonification System (rotation) and OptiTrac (spatial) data. For three participants (4, 8, and 19), a notable percentage of spatial points are missed. However, we left these participants in the data, as (1) they still had all of their rotation data, and (2) visual checking of their spatial data didn't suggest anything was amiss. The following functions can be used plot the spatial data in 3D.
+
+```{r}
+# Plotting functions to check reaches after chopping
+# Reaches from Son will plot as green, from Faux Son as red.
+# Later number trials are darker
+plotOTchopped <- function(ppp) {
+
+  model <- pTable$model[which(pTable$number==ppp)]
+  
+  firstcol <- "blue"
+  
+  if ( pTable$model[which(pTable$number==ppp)]==1 ) {
+    firstcol <- "black"
+  }
+  plot3d(
+    motionOT$x[which(motionOT$reach==1 & motionOT$participant==ppp)],
+    motionOT$y[which(motionOT$reach==1 & motionOT$participant==ppp)],
+    motionOT$z[which(motionOT$reach==1 & motionOT$participant==ppp)],
+    col = firstcol,xlab="x (forward)",ylab="y (vertical)",zlab="z (left-right)"
+  )
+  if ( pTable$model[which(pTable$number==ppp)]!=1 ) {
+    for ( i in 1:(model-1) ) {
+      plot3d(
+        motionOT$x[which(motionOT$reach==i & motionOT$participant==ppp)],
+        motionOT$y[which(motionOT$reach==i & motionOT$participant==ppp)],
+        motionOT$z[which(motionOT$reach==i & motionOT$participant==ppp)],
+        col = "blue",add=TRUE
+      )
+    }
+  }
+  plot3d(
+    motionOT$x[which(motionOT$reach==model & motionOT$participant==ppp)],
+    motionOT$y[which(motionOT$reach==model & motionOT$participant==ppp)],
+    motionOT$z[which(motionOT$reach==model & motionOT$participant==ppp)],
+    col = "black",add=TRUE
+  )
+  for ( i in (model+1):last_no_feedback_trial_num ) {
+    plot3d(
+      motionOT$x[which(motionOT$reach==i & motionOT$participant==ppp)],
+      motionOT$y[which(motionOT$reach==i & motionOT$participant==ppp)],
+      motionOT$z[which(motionOT$reach==i & motionOT$participant==ppp)],
+      col = "blue",add=TRUE
+    )
+  }
+  
+  if ( pTable$Condition[which(pTable$number==ppp)] == "Sonification" ) {
+    colorgradFunc <- colorRampPalette(c("green","#006600"))
+  } else if ( pTable$Condition[which(pTable$number==ppp)] == "Faux Sonification" ) {
+    colorgradFunc <- colorRampPalette(c("red","#660000"))
+  }
+  
+  colorgrad <- colorgradFunc(length((last_no_feedback_trial_num+1):max(motionOT$reach,na.rm = TRUE)))
+  
+  for ( i in (last_no_feedback_trial_num+1):max(motionOT$reach,na.rm = TRUE) ) {
+    plot3d(
+      motionOT$x[which(motionOT$reach==i & motionOT$participant==ppp)],
+      motionOT$y[which(motionOT$reach==i & motionOT$participant==ppp)],
+      motionOT$z[which(motionOT$reach==i & motionOT$participant==ppp)],
+      col = colorgrad[i-last_no_feedback_trial_num],add=TRUE
+    )
+  }
+  
+  aspect3d(1, 1, 1)
+  
+}
+plotOTchoppedReach <- function(ppp,rnum) {
+  model <- pTable$model[which(pTable$number==ppp)]
+  if ( rnum == model ) {
+    c <- "black"
+  } else if ( rnum > last_no_feedback_trial_num ) {
+    if ( pTable$Condition[which(pTable$number==ppp)] == "Sonification" ) {
+      c <- "green"
+    } else if ( pTable$Condition[which(pTable$number==ppp)] == "Faux Sonification" ) {
+      c <- "red"
+    }
+  } else {
+    c <- "blue"
+  }
+  plot3d(
+    motionOT$x[which(motionOT$reach==rnum & motionOT$participant==ppp)],
+    motionOT$y[which(motionOT$reach==rnum & motionOT$participant==ppp)],
+    motionOT$z[which(motionOT$reach==rnum & motionOT$participant==ppp)],
+    col = c,xlab="x (forward)",ylab="y (vertical)",zlab="z (left-right)"
+  )
+}
+plotSUReach <- function(ppp,rnum) {
+  
+  model <- pTable$model[which(pTable$number==ppp)]
+  if ( rnum == model ) {
+    c <- "black"
+    c2 <- "black"
+  } else if ( rnum > 25 ) {
+    if ( pTable$Condition[which(pTable$number==ppp)] == "Sonification" ) {
+      c <- "green"
+      c2 <- "green4"
+    } else if ( pTable$Condition[which(pTable$number==ppp)] == "Faux Sonification" ) {
+      c <- "red"
+      c2 <- "red4"
+    }
+  } else {
+    c <- "blue"
+    c2 <- "blue4"
+  }
+  cl <- length(motionSU$qax[which(motionSU$reach==rnum & motionSU$participant==ppp)])
+  cl2 <- length(motionSU$qbx[which(motionSU$reach==rnum & motionSU$participant==ppp)])
+  plot3d(
+    c(motionSU$qax[which(motionSU$reach==rnum & motionSU$participant==ppp)],
+      motionSU$qbx[which(motionSU$reach==rnum & motionSU$participant==ppp)]),
+    c(motionSU$qay[which(motionSU$reach==rnum & motionSU$participant==ppp)],
+      motionSU$qby[which(motionSU$reach==rnum & motionSU$participant==ppp)]),
+    c(motionSU$qaz[which(motionSU$reach==rnum & motionSU$participant==ppp)],
+      motionSU$qbz[which(motionSU$reach==rnum & motionSU$participant==ppp)]),
+    col = c( rep(c,cl), rep(c2,cl2) ),xlab="x",ylab="y",zlab="z"
+    #xlim = c(0,1), ylim = c(0,1), zlim = c(-1,1)
+  )
+  
+} 
+plotSUqa <- function(ppp) {
+  
+  model <- pTable$model[which(pTable$number==ppp)]
+  
+  plot3d(
+    motionSU$qax[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    motionSU$qay[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    motionSU$qaz[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    col = "blue",xlab="x",ylab="y",zlab="z"
+  )
+  for ( i in 1:(model-1) ) {
+    plot3d(
+      motionSU$qax[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qay[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qaz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = "blue",add=TRUE
+    )
+  }
+  plot3d(
+    motionSU$qax[which(motionSU$reach==model & motionSU$participant==ppp)],
+    motionSU$qay[which(motionSU$reach==model & motionSU$participant==ppp)],
+    motionSU$qaz[which(motionSU$reach==model & motionSU$participant==ppp)],
+    col = "black",add=TRUE
+  )
+  for ( i in (model-1):last_no_feedback_trial_num ) {
+    plot3d(
+      motionSU$qax[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qay[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qaz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = "blue",add=TRUE
+    )
+  }
+  
+  if ( pTable$Condition[which(pTable$number==ppp)] == "Sonification" ) {
+    colorgradFunc <- colorRampPalette(c("green","#006600"))
+  } else if ( pTable$Condition[which(pTable$number==ppp)] == "Condition" ) {
+    colorgradFunc <- colorRampPalette(c("red","#660000"))
+  }
+  
+  colorgrad <- colorgradFunc(length((last_no_feedback_trial_num+1):max(motionOT$reach,na.rm = TRUE)))
+  
+  for ( i in (last_no_feedback_trial_num+1):max(motionSU$reach,na.rm = TRUE) ) {
+    plot3d(
+      motionSU$qax[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qay[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qaz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = colorgrad[i-last_no_feedback_trial_num],add=TRUE
+    )
+  }
+  
+  aspect3d(1, 1, 1)
+  
+} # for plotting the "x/y/z" coordinates of the sensor 1 quaternion
+plotSUqb <- function(ppp) {
+  
+  model <- pTable$model[which(pTable$number==ppp)]
+  
+  plot3d(
+    motionSU$qbx[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    motionSU$qby[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    motionSU$qbz[which(motionSU$reach==1 & motionSU$participant==ppp)],
+    col = "blue",xlab="x",ylab="y",zlab="z"
+  )
+  for ( i in 1:(model-1) ) {
+    plot3d(
+      motionSU$qbx[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qby[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qbz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = "blue",add=TRUE
+    )
+  }
+  plot3d(
+    motionSU$qbx[which(motionSU$reach==model & motionSU$participant==ppp)],
+    motionSU$qby[which(motionSU$reach==model & motionSU$participant==ppp)],
+    motionSU$qbz[which(motionSU$reach==model & motionSU$participant==ppp)],
+    col = "black",add=TRUE
+  )
+  for ( i in (model-1):last_no_feedback_trial_num ) {
+    plot3d(
+      motionSU$qbx[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qby[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qbz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = "blue",add=TRUE
+    )
+  }
+  
+  if ( pTable$Condition[which(pTable$number==ppp)] == "Sonification" ) {
+    colorgradFunc <- colorRampPalette(c("green","#006600"))
+  } else if ( pTable$Condition[which(pTable$number==ppp)] == "Condition" ) {
+    colorgradFunc <- colorRampPalette(c("red","#660000"))
+  }
+  
+  colorgrad <- colorgradFunc(length((last_no_feedback_trial_num+1):max(motionOT$reach,na.rm = TRUE)))
+  
+  for ( i in (last_no_feedback_trial_num+1):max(motionSU$reach,na.rm = TRUE) ) {
+    plot3d(
+      motionSU$qbx[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qby[which(motionSU$reach==i & motionSU$participant==ppp)],
+      motionSU$qbz[which(motionSU$reach==i & motionSU$participant==ppp)],
+      col = colorgrad[i-last_no_feedback_trial_num],add=TRUE
+    )
+  }
+  
+  aspect3d(1, 1, 1)
+  
+} # ibid, for sensor 2 quaternion
+```
+```{r}
+plotOTchopped(4) # check integrity of participant 4 OT data
+```
+```{r}
+plotOTchopped(8) # check integrity of participant 8 OT data
+```
+```{r}
+plotOTchopped(19) # check integrity of participant 19 OT data
+```
+```{r}
+plotOTchoppedReach(1,10) # can check individual reach in OT data
+```
+```{r}
+plotSUReach(51,5) # can check individual reach in SU data ("x/y/z" components only)
+```
+```{r}
+plotSUqa(47) # can check integrity of participant SU data (sensor 1, "x/y/z" components only)
+```
+```{r}
+plotSUqb(33) # can check integrity of participant SU data (sensor 2, "x/y/z" components only)
+```
+
+# Statistical Analysis of Task
+
+Running code will generate printouts explaining analysis. 
+
+Final plots in paper were made by combining and labeling print outs. 
+
+```{r}
+source("reach_study_3_script_stats.R")
+```
+
+# Sonification System Analysis
+
+1. Find correlation between error measurements made by the sonification system and error measurements made by OptiTrack. 
+2. Compare the real-time DTW of the system to the standard DTW algorithm and to no time-warping (uses all and only reaches with real sonification feedback). 
+
+```{r}
+source("reach_study_3_script_systemanalysis.R")
+```
+
+To clear project and start over: rm(list = ls())
