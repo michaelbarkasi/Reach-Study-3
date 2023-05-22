@@ -1,0 +1,987 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red19\green19\blue19;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c9821\c9821\c9821;\cssrgb\c100000\c100000\c99971\c0;}
+\margl1440\margr1440\vieww23200\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"\
+Copyright (C) 2022 The R Foundation for Statistical Computing\
+Platform: x86_64-apple-darwin17.0 (64-bit)\
+\
+R is free software and comes with ABSOLUTELY NO WARRANTY.\
+You are welcome to redistribute it under certain conditions.\
+Type 'license()' or 'licence()' for distribution details.\
+\
+  Natural language support but running in an English locale\
+\
+R is a collaborative project with many contributors.\
+Type 'contributors()' for more information and\
+'citation()' on how to cite R or R packages in publications.\
+\
+Type 'demo()' for some demos, 'help()' for on-line help, or\
+'help.start()' for an HTML browser interface to help.\
+Type 'q()' to quit R.\
+\
+[Workspace loaded from ~/sonification-work/data-reach_study_3/reach_study_3/.RData]\
+\
+> # Want to clear project and start over? \
+> rm(list = ls())\
+> source("reach_study_3_script_setup.R")\
+Loading required package: rgl\
+Registered S3 method overwritten by 'htmlwidgets':\
+  method           from         \
+  print.htmlwidget tools:rstudio\
+Loading required package: hms\
+Loading required package: readr\
+Loading required package: dtw\
+Loading required package: proxy\
+\
+Attaching package: \'91proxy\'92\
+\
+The following objects are masked from \'91package:stats\'92:\
+\
+    as.dist, dist\
+\
+The following object is masked from \'91package:base\'92:\
+\
+    as.matrix\
+\
+Loaded dtw v1.23-1. See ?dtw for help, citation("dtw") for use in publication.\
+\
+Loading required package: rstatix\
+\
+Attaching package: \'91rstatix\'92\
+\
+The following object is masked from \'91package:stats\'92:\
+\
+    filter\
+\
+> source("reach_study_3_script_preprocessing.R")\
+Chopping and checking reaches\
+\
+Number of participants:  45 \
+Participants:  1 2 3 4 8 9 10 11 15 16 18 19 20 22 23 24 27 28 29 30 31 32 33 35 36 37 38 39 40 41 43 44 45 46 47 48 49 51 52 53 54 55 56 57 58 \
+\
+Participant:  1, R:  75, BSUSs:  0, ORs:  1, Ss:  1, S-R:  15, S-F:  14, ES-R:  0, ES-F:  0, Fs:  0, R (final):  74 \
+Participant:  2, R:  75, BSUSs:  0, ORs:  4, Ss:  0, S-R:  17, S-F:  10, ES-R:  0, ES-F:  0, Fs:  4, R (final):  71 \
+Participant:  3, R:  75, BSUSs:  0, ORs:  23, Ss:  2, S-R:  19, S-F:  20, ES-R:  0, ES-F:  0, Fs:  12, R (final):  61 \
+Participant:  4, R:  75, BSUSs:  0, ORs:  0, Ss:  2, S-R:  18, S-F:  15, ES-R:  0, ES-F:  0, Fs:  0, R (final):  73 \
+Participant:  8, R:  75, BSUSs:  0, ORs:  11, Ss:  2, S-R:  7, S-F:  17, ES-R:  0, ES-F:  0, Fs:  6, R (final):  67 \
+Participant:  9, R:  75, BSUSs:  0, ORs:  2, Ss:  0, S-R:  10, S-F:  10, ES-R:  0, ES-F:  0, Fs:  2, R (final):  73 \
+Participant:  10, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  17, S-F:  18, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  11, R:  75, BSUSs:  1, ORs:  13, Ss:  0, S-R:  15, S-F:  13, ES-R:  0, ES-F:  0, Fs:  12, R (final):  63 \
+Participant:  15, R:  75, BSUSs:  0, ORs:  3, Ss:  0, S-R:  18, S-F:  50, ES-R:  0, ES-F:  0, Fs:  2, R (final):  73 \
+Participant:  16, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  7, S-F:  9, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  18, R:  75, BSUSs:  0, ORs:  12, Ss:  3, S-R:  13, S-F:  23, ES-R:  0, ES-F:  0, Fs:  1, R (final):  71 \
+Participant:  19, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  15, S-F:  20, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  20, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  14, S-F:  27, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  22, R:  75, BSUSs:  0, ORs:  2, Ss:  0, S-R:  19, S-F:  26, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  23, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  18, S-F:  22, ES-R:  0, ES-F:  0, Fs:  1, R (final):  74 \
+Participant:  24, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  17, S-F:  19, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  27, R:  75, BSUSs:  0, ORs:  2, Ss:  0, S-R:  21, S-F:  17, ES-R:  0, ES-F:  0, Fs:  2, R (final):  73 \
+Participant:  28, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  13, S-F:  5, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  29, R:  75, BSUSs:  0, ORs:  1, Ss:  1, S-R:  20, S-F:  16, ES-R:  0, ES-F:  0, Fs:  1, R (final):  73 \
+Participant:  30, R:  75, BSUSs:  0, ORs:  2, Ss:  0, S-R:  6, S-F:  5, ES-R:  1, ES-F:  2, Fs:  2, R (final):  73 \
+Participant:  31, R:  75, BSUSs:  0, ORs:  9, Ss:  0, S-R:  17, S-F:  23, ES-R:  0, ES-F:  0, Fs:  9, R (final):  66 \
+Participant:  32, R:  75, BSUSs:  0, ORs:  22, Ss:  1, S-R:  21, S-F:  28, ES-R:  0, ES-F:  0, Fs:  9, R (final):  65 \
+Participant:  33, R:  75, BSUSs:  0, ORs:  4, Ss:  2, S-R:  25, S-F:  27, ES-R:  0, ES-F:  0, Fs:  5, R (final):  68 \
+Participant:  35, R:  75, BSUSs:  0, ORs:  14, Ss:  1, S-R:  25, S-F:  33, ES-R:  0, ES-F:  0, Fs:  12, R (final):  62 \
+Participant:  36, R:  75, BSUSs:  0, ORs:  6, Ss:  0, S-R:  18, S-F:  20, ES-R:  0, ES-F:  0, Fs:  6, R (final):  69 \
+Participant:  37, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  19, S-F:  17, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  38, R:  75, BSUSs:  0, ORs:  1, Ss:  1, S-R:  31, S-F:  37, ES-R:  0, ES-F:  0, Fs:  1, R (final):  73 \
+Participant:  39, R:  75, BSUSs:  0, ORs:  6, Ss:  0, S-R:  26, S-F:  23, ES-R:  0, ES-F:  0, Fs:  1, R (final):  74 \
+Participant:  40, R:  75, BSUSs:  0, ORs:  8, Ss:  0, S-R:  21, S-F:  24, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  41, R:  75, BSUSs:  0, ORs:  2, Ss:  0, S-R:  26, S-F:  25, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  43, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  20, S-F:  45, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  44, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  16, S-F:  15, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  45, R:  75, BSUSs:  0, ORs:  4, Ss:  0, S-R:  13, S-F:  19, ES-R:  0, ES-F:  0, Fs:  4, R (final):  71 \
+Participant:  46, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  14, S-F:  36, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  47, R:  75, BSUSs:  0, ORs:  4, Ss:  1, S-R:  13, S-F:  19, ES-R:  0, ES-F:  0, Fs:  4, R (final):  70 \
+Participant:  48, R:  75, BSUSs:  0, ORs:  7, Ss:  1, S-R:  18, S-F:  21, ES-R:  0, ES-F:  0, Fs:  1, R (final):  73 \
+Participant:  49, R:  75, BSUSs:  0, ORs:  0, Ss:  0, S-R:  19, S-F:  14, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  51, R:  75, BSUSs:  0, ORs:  4, Ss:  1, S-R:  11, S-F:  15, ES-R:  0, ES-F:  0, Fs:  0, R (final):  74 \
+Participant:  52, R:  75, BSUSs:  0, ORs:  1, Ss:  0, S-R:  18, S-F:  13, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  53, R:  75, BSUSs:  0, ORs:  16, Ss:  0, S-R:  21, S-F:  25, ES-R:  0, ES-F:  0, Fs:  0, R (final):  75 \
+Participant:  54, R:  75, BSUSs:  0, ORs:  6, Ss:  1, S-R:  15, S-F:  13, ES-R:  0, ES-F:  0, Fs:  2, R (final):  72 \
+Participant:  55, R:  75, BSUSs:  0, ORs:  8, Ss:  0, S-R:  10, S-F:  6, ES-R:  0, ES-F:  0, Fs:  8, R (final):  67 \
+Participant:  56, R:  75, BSUSs:  0, ORs:  27, Ss:  1, S-R:  15, S-F:  15, ES-R:  0, ES-F:  0, Fs:  1, R (final):  73 \
+Participant:  57, R:  75, BSUSs:  0, ORs:  4, Ss:  0, S-R:  19, S-F:  19, ES-R:  0, ES-F:  0, Fs:  1, R (final):  74 \
+Participant:  58, R:  75, BSUSs:  0, ORs:  4, Ss:  0, S-R:  8, S-F:  17, ES-R:  0, ES-F:  0, Fs:  4, R (final):  71 \
+\
+part_chop_summary column names:\
+\
+        RR = Raw Reaches, BSUS = Bad SU Samples, ORs = Overruns, Ss = Shorts, \
+        S-R = Random Sync, S-F = Feedback Sync, ES-R = Random Sync (end), \
+        ES-F = Feedback Sync (end), Fs = Floats, R(f) = Final Reaches, \
+        R(r) = Random Reaches, R(fb) = Reaches w/ Feedback, R(L25) = Final 25 Reaches,\
+        MRLr(ms) = Mean Reach Length, Random (ms), MRLfb(ms) = Mean Reach Length, Feedback (ms)\
+Computing stats for participant:  1 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  2 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  3 \
+Missed point percentage (OT): 0.0152045 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  4 \
+Missed point percentage (OT): 9.694258 \
+Reach ends found on avg at %: 93.18513 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  8 \
+Missed point percentage (OT): 32.49968 \
+Model end (OT) found at %: 67.37589 \
+Reach ends found on avg at %: 97.74444 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  9 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  10 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  11 \
+Missed point percentage (OT): 0.4552798 \
+Reach ends found on avg at %: 99.56752 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0.001487343 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  15 \
+Missed point percentage (OT): 0.0530856 \
+Reach ends found on avg at %: 99.95874 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  16 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  18 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  19 \
+Missed point percentage (OT): 9.376701 \
+Reach ends found on avg at %: 92.92673 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  20 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  22 \
+Missed point percentage (OT): 0.435184 \
+Reach ends found on avg at %: 99.60882 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  23 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  24 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  27 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  28 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  29 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  30 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  31 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  32 \
+Missed point percentage (OT): 0.9330845 \
+Reach ends found on avg at %: 99.2478 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  33 \
+Missed point percentage (OT): 0.01526019 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  35 \
+Missed point percentage (OT): 0.3898332 \
+Reach ends found on avg at %: 99.63925 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  36 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  37 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  38 \
+Missed point percentage (OT): 0.965461 \
+Reach ends found on avg at %: 99.73939 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  39 \
+Missed point percentage (OT): 0.8239278 \
+Reach ends found on avg at %: 99.3065 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  40 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  41 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  43 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  44 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  45 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  46 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  47 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  48 \
+Missed point percentage (OT): 0.1467766 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  49 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  51 \
+Missed point percentage (OT): 3.123716 \
+Reach ends found on avg at %: 97.61705 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  52 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  53 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  54 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  55 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  56 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  57 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+Computing stats for participant:  58 \
+Missed point percentage (OT): 0 \
+Reach ends found on avg at %: 100 \
+Missed reach percentage (OT): 0 \
+Missed point percentage (SU): 0 \
+Reach ends (SUa) found on avg at %: 100 \
+Reach ends (SUb) found on avg at %: 100 \
+Missed reach percentage (SU): 0 \
+\
+Reaches left after shorts and floats are removed: 3241\
+\
+> source("reach_study_3_script_stats.R")\
+\
+Running Improvement Stats:\
+Run w/ two-sided t-tests first to check for effects in the opposite direction:\
+\
+Stat Error Improvement Analysis for:  Spatial Target Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.4772168 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.1248174 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is two.sided than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Spatial Target Error \
+Son Mean:  17.72609 Faux Mean:  1.181818 \
+ t-stat:  4.517113 Deg of Freedom:  42.68922 p-value:  4.891663e-05 \
+ 95% Conf Int:  9.156425 23.93211 \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is two.sided than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  13.07719 \
+Faux:  11.46912 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is two.sided than 0.\
+\
+Results of one-sample t-test for Son:  Spatial Target Error \
+Son Mean:  17.72609 \
+ t-stat:  6.500733 Deg of Freedom:  22 p-value:  1.538665e-06 \
+ 95% Conf Int:  12.07109 23.38109 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Spatial Target Error \
+Faux Mean:  1.181818 \
+ t-stat:  0.483317 Deg of Freedom:  21 p-value:  0.6338716 \
+ 95% Conf Int:  -3.903303 6.266939 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Spatial Path Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.2377625 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.7823411 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is two.sided than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Spatial Path Error \
+Son Mean:  7.469565 Faux Mean:  -0.3727273 \
+ t-stat:  4.255578 Deg of Freedom:  40.95141 p-value:  0.0001182977 \
+ 95% Conf Int:  4.120494 11.56409 \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is two.sided than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  6.978176 \
+Faux:  5.304193 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is two.sided than 0.\
+\
+Results of one-sample t-test for Son:  Spatial Path Error \
+Son Mean:  7.469565 \
+ t-stat:  5.133544 Deg of Freedom:  22 p-value:  3.815016e-05 \
+ 95% Conf Int:  4.451976 10.48715 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Spatial Path Error \
+Faux Mean:  -0.3727273 \
+ t-stat:  -0.329597 Deg of Freedom:  21 p-value:  0.7449695 \
+ 95% Conf Int:  -2.724475 1.97902 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Rotation Target Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.9013025 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.8364991 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is two.sided than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Rotation Target Error \
+Son Mean:  0.3363522 Faux Mean:  -0.02303182 \
+ t-stat:  4.961077 Deg of Freedom:  41.14784 p-value:  1.261425e-05 \
+ 95% Conf Int:  0.2131029 0.505665 \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is two.sided than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  0.2730413 \
+Faux:  0.2100912 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is two.sided than 0.\
+\
+Results of one-sample t-test for Son:  Rotation Target Error \
+Son Mean:  0.3363522 \
+ t-stat:  5.907855 Deg of Freedom:  22 p-value:  6.044e-06 \
+ 95% Conf Int:  0.2182803 0.4544241 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Rotation Target Error \
+Faux Mean:  -0.02303182 \
+ t-stat:  -0.5141996 Deg of Freedom:  21 p-value:  0.6124814 \
+ 95% Conf Int:  -0.116181 0.07011739 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Rotation Path Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.6947905 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.06636283 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is two.sided than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Rotation Path Error \
+Son Mean:  0.1576943 Faux Mean:  -0.03384545 \
+ t-stat:  4.571448 Deg of Freedom:  37.41237 p-value:  5.153778e-05 \
+ 95% Conf Int:  0.1066756 0.276404 \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is two.sided than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  0.1686957 \
+Faux:  0.1067751 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is two.sided than 0.\
+\
+Results of one-sample t-test for Son:  Rotation Path Error \
+Son Mean:  0.1576943 \
+ t-stat:  4.483074 Deg of Freedom:  22 p-value:  0.0001853782 \
+ 95% Conf Int:  0.08474484 0.2306439 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Rotation Path Error \
+Faux Mean:  -0.03384545 \
+ t-stat:  -1.486763 Deg of Freedom:  21 p-value:  0.1519384 \
+ 95% Conf Int:  -0.08118689 0.01349598 \
+ Alt Hyp:  true mean is two.sided than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Run w/ one-sided t-tests as explained in paper:\
+\
+Stat Error Improvement Analysis for:  Spatial Target Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.4772168 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.1248174 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is greater than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Spatial Target Error \
+Son Mean:  17.72609 Faux Mean:  1.181818 \
+ t-stat:  4.517113 Deg of Freedom:  42.68922 p-value:  2.445831e-05 \
+ 95% Conf Int:  10.38623 Inf \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is greater than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  13.07719 \
+Faux:  11.46912 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is greater than 0.\
+\
+Results of one-sample t-test for Son:  Spatial Target Error \
+Son Mean:  17.72609 \
+ t-stat:  6.500733 Deg of Freedom:  22 p-value:  7.693327e-07 \
+ 95% Conf Int:  13.04381 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Spatial Target Error \
+Faux Mean:  1.181818 \
+ t-stat:  0.483317 Deg of Freedom:  21 p-value:  0.3169358 \
+ 95% Conf Int:  -3.025783 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Spatial Path Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.2377625 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.7823411 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is greater than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Spatial Path Error \
+Son Mean:  7.469565 Faux Mean:  -0.3727273 \
+ t-stat:  4.255578 Deg of Freedom:  40.95141 p-value:  5.914883e-05 \
+ 95% Conf Int:  4.740955 Inf \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is greater than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  6.978176 \
+Faux:  5.304193 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is greater than 0.\
+\
+Results of one-sample t-test for Son:  Spatial Path Error \
+Son Mean:  7.469565 \
+ t-stat:  5.133544 Deg of Freedom:  22 p-value:  1.907508e-05 \
+ 95% Conf Int:  4.971034 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Spatial Path Error \
+Faux Mean:  -0.3727273 \
+ t-stat:  -0.329597 Deg of Freedom:  21 p-value:  0.6275153 \
+ 95% Conf Int:  -2.318643 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Rotation Target Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.9013025 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.8364991 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is greater than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Rotation Target Error \
+Son Mean:  0.3363522 Faux Mean:  -0.02303182 \
+ t-stat:  4.961077 Deg of Freedom:  41.14784 p-value:  6.307123e-06 \
+ 95% Conf Int:  0.2374852 Inf \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is greater than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  0.2730413 \
+Faux:  0.2100912 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is greater than 0.\
+\
+Results of one-sample t-test for Son:  Rotation Target Error \
+Son Mean:  0.3363522 \
+ t-stat:  5.907855 Deg of Freedom:  22 p-value:  3.022e-06 \
+ 95% Conf Int:  0.2385899 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Rotation Target Error \
+Faux Mean:  -0.02303182 \
+ t-stat:  -0.5141996 Deg of Freedom:  21 p-value:  0.6937593 \
+ 95% Conf Int:  -0.1001066 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Stat Error Improvement Analysis for:  Rotation Path Error \
+\
+Checking assumptions for both one-sample and Welch two-sample t-tests.\
+\
+Checking for outliers (>3 sd from mean).\
+Number of outliers in Son: 0 Passed? Yes \
+Number of outliers in Fau: 0 Passed? Yes \
+\
+Checking for normality w/ Shapiro-Wilk Test (p>0.05):\
+p in Shapiro-Wilk for Son: 0.6947905 Passed? Yes \
+p in Shapiro-Wilk for Fau: 0.06636283 Passed? Yes \
+\
+Running Welch Two-sample t-test w/ alt hypothesis that Son improvement is greater than Faux Son improvement.\
+\
+Results of Welch two-sample t-test for:  Rotation Path Error \
+Son Mean:  0.1576943 Faux Mean:  -0.03384545 \
+ t-stat:  4.571448 Deg of Freedom:  37.41237 p-value:  2.576889e-05 \
+ 95% Conf Int:  0.120872 Inf \
+ Alt Hyp:  true difference in means between group Sonification and group Faux Sonification is greater than 0.\
+ Method:  Welch Two Sample t-test \
+\
+Standard Deviation:\
+Son:  0.1686957 \
+Faux:  0.1067751 \
+\
+Running one-sample t-tests for both Son and Faux w/ alt hypothesis that improvement is greater than 0.\
+\
+Results of one-sample t-test for Son:  Rotation Path Error \
+Son Mean:  0.1576943 \
+ t-stat:  4.483074 Deg of Freedom:  22 p-value:  9.268912e-05 \
+ 95% Conf Int:  0.09729295 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test \
+\
+Results of one-sample t-test for Faux:  Rotation Path Error \
+Faux Mean:  -0.03384545 \
+ t-stat:  -1.486763 Deg of Freedom:  21 p-value:  0.9240308 \
+ 95% Conf Int:  -0.07301736 Inf \
+ Alt Hyp:  true mean is greater than 0.\
+ Method:  One Sample t-test\
+Saving plots.\
+\
+Finding Mean Values for Spatial Target Error \
+Mean Error Faux Son No Feedback: 33.18182 \
+Mean Error Faux Son Feedback: 32 \
+Mean Error Son No Feedback: 33.55652 \
+Mean Error Son Feedback: 15.83043 \
+SD Error Faux Son No Feedback: 14.1967 \
+SD Error Faux Son Feedback: 15.90663 \
+SD Error Son No Feedback: 12.17086 \
+SD Error Son Feedback: 8.991887 \
+\
+Making plots for Spatial Target Error \
+\
+Saving plots.\
+\
+Finding Mean Values for Spatial Path Error \
+Mean Error Faux Son No Feedback: 18.11818 \
+Mean Error Faux Son Feedback: 18.49091 \
+Mean Error Son No Feedback: 19.75217 \
+Mean Error Son Feedback: 12.28261 \
+SD Error Faux Son No Feedback: 6.761913 \
+SD Error Faux Son Feedback: 7.163526 \
+SD Error Son No Feedback: 7.480026 \
+SD Error Son Feedback: 4.7689 \
+\
+Making plots for Spatial Path Error \
+\
+Saving plots.\
+\
+Finding Mean Values for Rotation Target Error \
+Mean Error Faux Son No Feedback: 0.6440945 \
+Mean Error Faux Son Feedback: 0.6671264 \
+Mean Error Son No Feedback: 0.6592687 \
+Mean Error Son Feedback: 0.3229165 \
+SD Error Faux Son No Feedback: 0.2669661 \
+SD Error Faux Son Feedback: 0.2937713 \
+SD Error Son No Feedback: 0.2337444 \
+SD Error Son Feedback: 0.1630097 \
+\
+Making plots for Rotation Target Error \
+\
+Saving plots.\
+\
+Finding Mean Values for Rotation Path Error \
+Mean Error Faux Son No Feedback: 0.3976336 \
+Mean Error Faux Son Feedback: 0.4314791 \
+Mean Error Son No Feedback: 0.4489274 \
+Mean Error Son Feedback: 0.291233 \
+SD Error Faux Son No Feedback: 0.1467166 \
+SD Error Faux Son Feedback: 0.1592081 \
+SD Error Son No Feedback: 0.1634445 \
+SD Error Son Feedback: 0.1183307 \
+\
+Making plots for Rotation Path Error \
+\
+Saving plots.\
+\
+Box formed by min/max values on each OT axis:\
+x: -29.59695 , 53.73598 \
+y: 2.893403 , 83.58627 \
+z: -72.36325 , 59.91166 \
+\
+Standard deviation in spatial target error for each participant in Faux Son\
+P:  2 sd:  15.58529 \
+P:  4 sd:  4.708716 \
+P:  8 sd:  4.93703 \
+P:  10 sd:  4.73031 \
+P:  16 sd:  5.877548 \
+P:  18 sd:  8.196374 \
+P:  20 sd:  2.153578 \
+P:  22 sd:  4.979853 \
+P:  24 sd:  6.31141 \
+P:  28 sd:  5.501676 \
+P:  30 sd:  6.955029 \
+P:  32 sd:  6.021342 \
+P:  36 sd:  7.022014 \
+P:  38 sd:  23.88462 \
+P:  40 sd:  10.48653 \
+P:  44 sd:  3.913468 \
+P:  46 sd:  8.503593 \
+P:  48 sd:  15.9715 \
+P:  52 sd:  27.15506 \
+P:  54 sd:  9.824458 \
+P:  56 sd:  9.306222 \
+P:  58 sd:  3.278609 \
+\
+> source("reach_study_3_script_systemanalysis.R")\
+New names:\
+reaches (lost overruns): 3190 \
+mean sample rate: 1000.254 \
+min sample rate: 998 \
+max sample rate: 1004.1 \
+number of reaches w/ rate <= 999: 5 \
+number of reaches w/ rate >= 1001: 216 \
+\
+Matching up each OT normalized error with corresponding SU normalized error.\
+Number of OT data points (w/o NAs):  324276 \
+Number of SU data points (w/o NAs):  324276 \
+\
+Checking for outliers (>0.3% at >3 sd from mean), based on the 68\'9695\'9699.7 rule.\
+\
+Number of outliers in OT data: 4378 Passed? No \
+Number of outliers in SU data: 4888 Passed? No \
+\
+Removing outliers, pass: 1 \
+\
+Number of outliers in OT data: 2799 Passed? No \
+Number of outliers in SU data: 2790 Passed? No \
+\
+Number of samples after outliers removed:\
+Number of OT data points (w/o NA):  318216 \
+Number of SU data points (w/o NA):  318216 \
+\
+Removing outliers, pass: 2 \
+\
+Number of outliers in OT data: 1586 Passed? No \
+Number of outliers in SU data: 1195 Passed? No \
+\
+Number of samples after outliers removed:\
+Number of OT data points (w/o NA):  313843 \
+Number of SU data points (w/o NA):  313843 \
+\
+Removing outliers, pass: 3 \
+\
+Number of outliers in OT data: 1028 Passed? No \
+Number of outliers in SU data: 635 Passed? Yes \
+\
+Number of samples after outliers removed:\
+Number of OT data points (w/o NA):  311355 \
+Number of SU data points (w/o NA):  311355 \
+\
+Removing outliers, pass: 4 \
+\
+Number of outliers in OT data: 642 Passed? Yes \
+Number of outliers in SU data: 383 Passed? Yes \
+\
+Number of samples after outliers removed:\
+Number of OT data points (w/o NA):  309784 \
+Number of SU data points (w/o NA):  309784 \
+\
+Checking for normality w/ histograms:\
+Normality clearly fails.\
+\
+Finding correlation between SU and OT normalized error values for each reach point using Spearman.\
+Error E of sample S from reach R by participant P was normalized by dividing E by the length of P's model reach.\
+Note if S is sample n and R has length L, E is the linear distance between S and the as.integer(n/L) model point; DTW was not used to match reach and model points.\
+Correlation (rho):  0.9198007 \
+Deg of Freedom:  \
+p value:  0 \
+Finding correlation between SU and OT normalized error values for each reach point using Pearson.\
+Error E of sample S from reach R by participant P was normalized by dividing E by the length of P's model reach.\
+Note if S is sample n and R has length L, E is the linear distance between S and the as.integer(n/L) model point; DTW was not used to match reach and model points.\
+Correlation (r):  0.925397 \
+Deg of Freedom:  309782 \
+p value:  0 \
+For full correlation results, run corr_test separately in R script.Normalizing MOT estimate\
+Normalizing sample numbers\
+Participant: 1 , 3 , 9 , 11 , 15 , 19 , 23 , 27 , 29 , 31 , 33 , 35 , 37 , 39 , 41 , 43 , 45 , 47 , 49 , 51 , 53 , 55 , 57 , \
+Building DTW series\
+Participant: 1 , 3 , 9 , 11 , 15 , 19 , 23 , 27 , 29 , 31 , 33 , 35 , 37 , 39 , 41 , 43 , 45 , 47 , 49 , 51 , 53 , 55 , 57 , \
+Printing}
