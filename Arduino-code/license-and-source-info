@@ -1,0 +1,92 @@
+/*
+ * Code for Wave APS Prototype 4
+ *  
+ * 3-Sensor Motion Sonification via ttPWM and 3D position processing for multi-pivot body movements
+ *
+ * by Michael Barkasi
+ * copyright 2023
+ * 
+ * For use with three TDK InvenSense ICM-20948 inertial sensors (SparkFun breakouts ID 15335) (SPI), and 
+ *  ESP32 feather (Adafruit HUZZAH32, ID 3591), mounted on a custom PCB feather.
+ *
+ * Requires the SparkFun libary ICM_20948.h and board manager for Adafruit ESP32 feather.
+ * 
+ **************************************************************
+ * Some code related to SPI/Interrupts for Sen20948 taken from: 
+ * 
+ * Example3_Interrupts.ino
+ * ICM 20948 Arduino Library Demo
+ * Builds on Example2_Advanced.ino to set up interrupts when data is ready
+ * Owen Lyke @ SparkFun Electronics
+ * Original Creation Date: June 5 2019
+ *
+ * Some code related to the setup for Sen20948 taken from (and now modified): 
+ * 
+ * Example2_Advanced.ino
+ * ICM 20948 Arduino Library Demo
+ * Shows how to use granular configuration of the ICM 20948
+ * Owen Lyke @ SparkFun Electronics
+ * Original Creation Date: April 17 2019
+ * 
+ * Example7_DMP_Quat6_EulerAngles.ino
+ * ICM 20948 Arduino Library Demo
+ * Initialize the DMP based on the TDK InvenSense ICM20948_eMD_nucleo_1.0 example-icm20948
+ * Paul Clark, April 25th, 2021
+ * Based on original code by:
+ * Owen Lyke @ SparkFun Electronics
+ * Original Creation Date: April 17 2019
+ * 
+ * Also, the redefine of "CM_20948_Status_e ICM_20948::initializeDMP(void)" in SensorSetup is from: 
+ * 
+ * Example10_DMP_FastMultipleSensors.ino
+ * ICM 20948 Arduino Library Demo
+ * Initialize the DMP based on the TDK InvenSense ICM20948_eMD_nucleo_1.0 example-icm20948
+ * Paul Clark, April 25th, 2021
+ * Based on original code by:
+ * Owen Lyke @ SparkFun Electronics
+ * Original Creation Date: April 17 2019
+ * 
+ *  From SparkFun on examples 7 and 10: 
+ *  ** This example is based on InvenSense's _confidential_ Application Note "Programming Sequence for DMP Hardware Functions".
+ *  ** We are grateful to InvenSense for sharing this with us.
+ *  
+ * License for this code contained in License.md. This license is the MIT License, which is found here: https://github.com/sparkfun/SparkFun_ICM-20948_ArduinoLibrary/blob/main/License.md
+ *      and here: https://opensource.org/licenses/MIT
+ *      
+ *      The relevant part: "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
+ *                          files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
+ *                          modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
+ *                          is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included 
+ *                          in all copies or substantial portions of the Software."
+ * 
+ * ***************************************************************
+ * Sound Generation: 
+ *
+ * Setup base wave form @ 152,380 Hz using the ESP32's hardware PWM
+ *  152,380 Hz is the fastest oscilation its hardware PWM can achieve with at least 9 bit of resolution
+ *  Get this with: clk_src = LEDC_APB_CLK (80 MHz).
+ *  ... then duty resolution is integer (log 2 (LEDC_APB_CLK / frequency))
+ *     see: 
+ *       https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html
+ *       https://github.com/espressif/esp-idf/blob/5893797bf068ba6f72105fff289ead370b4591a3/examples/peripherals/ledc/ledc_basic/main/ledc_basic_example_main.c
+ * Initial code to get PWM working from: https://randomnerdtutorials.com/esp32-pwm-arduino-ide/
+ * Note: We really want this PWM to run in LEDC_HIGH_SPEED_MODE; the code from the esp-idf gives this control, but not the code for arduino;
+ *  Assuming arduino puts PWM into high-speed mode by default --- I have confirmed with this with oscilloscope readings.
+ *
+ *  How the sound is generated: Two timers are used. The first (PWM) controls a base wave form of digital pulses with ultrasonic (e.g., 152 kHz) oscilation. 
+ *   E.g., 152 kHz is too fast for a speaker, which (acting as a low-pass filter) only "sees" the average voltage, which is digital HIGH * duty cycle. 
+ *   (Duty cycle is pulse width, e.g. pulse on for 70% of the period and off for 30%.) The second timer oscilates pulse width (duty cycle) of this wave at a hearable frequency, 
+ *   flipping between 0 and some second nonzero value. This second nonzero value essentially ends up controlling volume, since it covaries with the voltage "seen" on each pulse by the speaker.
+ *   
+ * ***************************************************************
+ * BlueTooth: 
+ *  
+ * Based on the Arduino SerialToSerialBT example, which came with the following preface:
+ * 
+ * //This example code is in the Public Domain (or CC0 licensed, at your option.)
+ * //By Evandro Copercini - 2018
+ * //
+ * //This example creates a bridge between Serial and Classical Bluetooth (SPP)
+ * //and also demonstrate that SerialBT have the same functionalities of a normal Serial
+ * 
+*/
